@@ -1,0 +1,46 @@
+package main
+
+import (
+	"fmt"
+	"regexp"
+	"strings"
+)
+
+func isValidCreditCard(cardNumber string) bool {
+	// Define the regular expression pattern
+	pattern := `^[456]\d{3}(-?\d{4}){3}$`
+
+	// Compile the regular expression
+	regex := regexp.MustCompile(pattern)
+
+	// Check if the card number matches the pattern
+	if !regex.MatchString(cardNumber) {
+		return false
+	}
+
+	// Remove hyphens and check for consecutive repeated digits
+	cardNumber = strings.ReplaceAll(cardNumber, "-", "")
+	for i := 0; i < len(cardNumber)-3; i++ {
+		if cardNumber[i] == cardNumber[i+1] && cardNumber[i] == cardNumber[i+2] && cardNumber[i] == cardNumber[i+3] {
+			return false
+		}
+	}
+
+	return true
+}
+
+func main() {
+	var n int
+	fmt.Scanln(&n)
+
+	for i := 0; i < n; i++ {
+		var cardNumber string
+		fmt.Scanln(&cardNumber)
+
+		if isValidCreditCard(cardNumber) {
+			fmt.Println("Valid")
+		} else {
+			fmt.Println("Invalid")
+		}
+	}
+}
